@@ -1,0 +1,64 @@
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+apply plugin: 'com.android.application'
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.12.9'
+    }
+}
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        manifestPlaceholders = [
+                onesignal_app_id               : '540e3b41-f030-4d6e-bf29-a2a7de905ea0',
+                onesignal_google_project_number: 'REMOTE'
+        ]
+        applicationId "com.example.commercialapp"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'com.facebook.android:facebook-android-sdk:5.4.0'
+    implementation 'com.facebook.android:facebook-core:5.4.0'
+    implementation 'com.facebook.android:facebook-marketing:5.4.0'
+    implementation 'com.onesignal:OneSignal:3.15.4'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.firebase:firebase-database:19.5.1'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    compile project(":tenjinProject")
+    compile 'com.koushikdutta.ion:ion:3.0.9'
+}
+
+apply plugin: 'com.google.gms.google-services'

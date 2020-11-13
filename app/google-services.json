@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "109081519681",
+    "firebase_url": "https://find-a-pair-afb3b.firebaseio.com",
+    "project_id": "find-a-pair-afb3b",
+    "storage_bucket": "find-a-pair-afb3b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109081519681:android:238722fbcdb4e4d85d08c0",
+        "android_client_info": {
+          "package_name": "com.example.commercialapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "109081519681-160d7lhaqcm6rbq310gtqvi3m5n2385g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Ue3Fx9ehJCccA8IG9cL1K5wSQ4ZpuQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109081519681-160d7lhaqcm6rbq310gtqvi3m5n2385g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

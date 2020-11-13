@@ -1,0 +1,3 @@
+include ':tenjinProject'
+include ':app'
+rootProject.name = "CommercialApp"
