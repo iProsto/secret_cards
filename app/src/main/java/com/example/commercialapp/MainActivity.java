@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean showGame = true;
     private final int CARD_COUNT = 12;
     private final String REF_NAME = "web_url";
+    private final String FIRST_START = "first_start";
     private final String STATE_NAME = "state_path";
     public static String webViewURL = "https://forapp.site/click.php?key=4cg631mtg1mndp3y5c47";
     private final int[] orderCardArr = {1, 1, 1, 2, 2, 1, 3, 3, 2, 4, 4, 2};
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //# VIEW
 
     private ImageView[] images;
-//    private LinearLayout gameLinear;
     private ImageView firstOpenedCard = null;
     private ImageView[] openedCards;
     private TextView userScore;
@@ -66,37 +66,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int score = 0;
     private boolean gameRunning = false;
 
-//    //# OTHER
-//    public ValueCallback<Uri[]> uploadMessage;
-//    private ValueCallback<Uri> mUploadMessage;
-//    public static final int REQUEST_SELECT_FILE = 100;
-//    private final static int FILECHOOSER_RESULTCODE = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initialization();
-
-//        initWebView();
-        initButton();
-        randomizeCardSpawn();
-        firstClosingCards();
-//        initPushMsg();
-//        initFB();
-
-        showGameHideWebView(isShowGame());
-
+        webViewURL = loadLink();
         new RequestToGit(new RequestListener() {
             @Override
             public void waiterForBool(boolean bool) {
-                //bool = !bool; //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Temporarily
                 if (showGame != bool) {
                     showGameHideWebView(bool);
                 }
-                showLog(String.valueOf(bool));
             }
 
             @Override
@@ -107,13 +89,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 showLog(String.valueOf(link));
             }
+
+            @Override
+            public void rejection(){
+                if(firstStart()){
+                    showGameHideWebView(true);
+                }
+            }
         });
+
+        if (!firstStart()){
+            showGameHideWebView(isShowGame());
+        }
     }
 
     public void openWebActivity(String url) {
         Intent intent = new Intent(this, InternetActivity.class);
         intent.putExtra(EXTRA_MESSAGE, url);
         startActivity(intent);
+        finish();
     }
 
 
@@ -122,112 +116,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * #
      * */
 
-//    @SuppressLint("SetJavaScriptEnabled")
-//    private void initWebView() {
-//        webViewURL = loadLink();
-//        WebSettings settings = webView.getSettings();
-//        settings.setDomStorageEnabled(true);
-//        settings.setJavaScriptEnabled(true);
-//        settings.setAllowContentAccess(true);
-//        settings.setAllowFileAccess(true);
-//        settings.setAppCacheEnabled(true);
-//        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-////        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
-//
-//        WebViewClient webViewClient = new WebViewClient() {
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                view.loadUrl(url);
-//                return true;
-//            }
-//
-//            @TargetApi(Build.VERSION_CODES.N)
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-//                showLog("Load url2: " + request.getUrl().toString());
-////                showLog("Load getPath: " + request.getUrl().getPath());
-//
-//                if (bigBack && request.getUrl().getPath() != "/") {
-////                    showLog("Backed");
-//                    view.loadUrl(request.getUrl().toString().substring(0, request.getUrl().toString().length() - request.getUrl().getPath().length() + 1));
-//                } else {
-//                    view.loadUrl(request.getUrl().toString());
-//                }
-//                bigBack = false;
-//                return true;
-//            }
-//
-//            @Override
-//            public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
-//                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                String message = "SSL Certificate error.";
-//                showLog(message);
-//                switch (error.getPrimaryError()) {
-//                    case SslError.SSL_UNTRUSTED:
-//                        message = "The certificate authority is not trusted.";
-//                        break;
-//                    case SslError.SSL_EXPIRED:
-//                        message = "The certificate has expired.";
-//                        break;
-//                    case SslError.SSL_IDMISMATCH:
-//                        message = "The certificate Hostname mismatch.";
-//                        break;
-//                    case SslError.SSL_NOTYETVALID:
-//                        message = "The certificate is not yet valid.";
-//                        break;
-//                }
-//                message += "Do you want to continue anyway?";
-//
-//                builder.setTitle("SSL Certificate Error");
-//                builder.setMessage(message);
-//                builder.setPositiveButton("continue", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        handler.proceed();
-//                    }
-//                });
-//                builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        handler.cancel();
-//                    }
-//                });
-//                final AlertDialog dialog = builder.create();
-//                dialog.show();
-//            }
-//        };
-//
-//        WebChromeClient myChromeClient = new WebChromeClient() {
-//            // For Lollipop 5.0+ Devices
-//            public boolean onShowFileChooser(WebView mWebView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-//                if (uploadMessage != null) {
-//                    uploadMessage.onReceiveValue(null);
-//                    uploadMessage = null;
-//                }
-//                uploadMessage = filePathCallback;
-//                Intent intent = fileChooserParams.createIntent();
-//                try {
-//                    startActivityForResult(intent, REQUEST_SELECT_FILE);
-//                } catch (ActivityNotFoundException e) {
-//                    uploadMessage = null;
-//                    Toast.makeText(MainActivity.this, "Cannot Open File Chooser", Toast.LENGTH_LONG).show();
-//                    return false;
-//                }
-//                return true;
-//            }
-//        };
-//
-//        webView.setWebChromeClient(myChromeClient);
-//        webView.setWebViewClient(webViewClient);
-//    }
-
-//    private void initPushMsg() {
-//        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
-//        OneSignal.startInit(this)
-//                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-//                .unsubscribeWhenNotificationsAreDisabled(true)
-//                .init();
-//    }
 
     private void initialization() {
         randCardArr = new int[CARD_COUNT];
@@ -259,96 +147,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //    private void initFireBaseDB() {
-//        database = FirebaseDatabase.getInstance();
-//        myRef = database.getReference();
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Map<String, Boolean> value = (Map<String, Boolean>) dataSnapshot.getValue();
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                Log.w("test", "Failed to read value.", error.toException());
-//            }
-//        });
-//    }
-//    private void initFB() {
-//        FacebookSdk.setApplicationId(String.valueOf(R.string.facebook_app_id));
-//        FacebookSdk.sdkInitialize(this);
-//        FacebookSdk.fullyInitialize();
-//        FacebookSdk.setAutoInitEnabled(true);
-//        Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
-//        if (targetUrl != null) {
-//            setDeepLink(targetUrl.getQuery());
-//        } else {
-//            AppLinkData.fetchDeferredAppLinkData(
-//                    this, String.valueOf(R.string.facebook_app_id),
-//                    appLinkData -> {
-//                        if (appLinkData != null) {
-//                            setDeepLink(appLinkData.getTargetUri().getQuery());
-//                        }
-//                    });
-//        }
-//    }
-
 
     /*#
      * # GLOBAL FUNCTION
      * #
      * */
 
-//    private void getAdvertisingID() {
-//        @SuppressLint("StaticFieldLeak")
-//        AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
-//            @Override
-//            protected String doInBackground(Void... params) {
-//                AdvertisingIdClient.Info idInfo = null;
-//                try {
-//                    idInfo = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
-//                } catch (GooglePlayServicesNotAvailableException e) {
-//                    e.printStackTrace();
-//                } catch (GooglePlayServicesRepairableException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                String advertId = null;
-//                try {
-//                    advertId = idInfo.getId();
-//
-//                } catch (NullPointerException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                return advertId;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String advertId) {
-//                showLog(advertId);
-//            }
-//
-//        };
-//        task.execute();
-//    }
 
     private void showGameHideWebView(boolean showGame) {
-        this.showGame = showGame;
-        saveState(showGame);
-//            if (showGame) {
-//                webViewLinear.setVisibility(View.GONE);
-//                gameLinear.setVisibility(View.VISIBLE);
-//            } else {
-//                webViewLinear.setVisibility(View.VISIBLE);
-//                gameLinear.setVisibility(View.GONE);
-//                webView.loadUrl(webViewURL);
-//            }
-        if (!showGame) {
-            openWebActivity(webViewURL);
-        }
+       runOnUiThread(()->{
+           this.showGame = showGame;
+           saveState(showGame);
+           if (!showGame) {
+               openWebActivity(webViewURL);
+           } else {
+               LinearLayout gameScene = findViewById(R.id.gameScene);
+               gameScene.setVisibility(View.VISIBLE);
+               initialization();
+               initButton();
+               randomizeCardSpawn();
+               firstClosingCards();
+           }
+       });
     }
 
     public void saveLink(String url) {
@@ -373,20 +193,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences.Editor ed = sPref.edit();
         ed.putBoolean(STATE_NAME, showGame);
         ed.commit();
+        showLog("Save Game STATE: " + showGame);
     }
-
-//    private void setDeepLink(String deepLink) {
-//        String url = webViewURL;
-//        showLog("Link got: " + deepLink);
-//        showLog("Link webview: " + webViewURL);
-//        if (webViewURL.indexOf('?') == -1) {
-//            url += "/?" + deepLink;
-//        } else {
-//            url += "&" + deepLink;
-//        }
-//        webView.loadUrl(url);
-//        showLog("Link got2: " + url);
-//    }
 
 
     /*#
@@ -487,34 +295,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isShowGame() {
         SharedPreferences sPref;
         sPref = getPreferences(MODE_PRIVATE);
+        showLog("Load Game STATE: " + sPref.getBoolean(STATE_NAME, showGame));
         return sPref.getBoolean(STATE_NAME, showGame);
     }
 
+    private boolean firstStart() {
+        boolean answ;
+        SharedPreferences sPref;
+        sPref = getPreferences(MODE_PRIVATE);
+        answ = sPref.getBoolean(FIRST_START, true);
+        showLog("Load FIRST: " + sPref.getBoolean(FIRST_START, true));
+
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putBoolean(FIRST_START, false);
+        ed.commit();
+        return answ;
+    }
 
     /*#
      * # OVERRIDE FUNCTION
      * #
      * */
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-//        super.onActivityResult(requestCode, resultCode, intent);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            if (requestCode == REQUEST_SELECT_FILE) {
-//                if (uploadMessage == null)
-//                    return;
-//                uploadMessage.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
-//                uploadMessage = null;
-//            }
-//        } else if (requestCode == FILECHOOSER_RESULTCODE) {
-//            if (null == mUploadMessage)
-//                return;
-//            Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();
-//            mUploadMessage.onReceiveValue(result);
-//            mUploadMessage = null;
-//        } else
-//            Toast.makeText(this, "Failed to Upload Image", Toast.LENGTH_LONG).show();
-//    }
 
     @Override
     public void onClick(View v) {
@@ -541,27 +343,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        TenjinSDK instance = TenjinSDK.getInstance(this, API_KEY);
-//        String[] optInParams = {"ip_address", "advertising_id", "developer_device_id", "limit_ad_tracking", "referrer", "iad"};
-//        instance.optInParams(optInParams);
-//        instance.connect();
-//    }
-
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        webView.saveState(outState);
-//    }
-//
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        webView.restoreState(savedInstanceState);
-//    }
 
     @Override
     protected void onDestroy() {

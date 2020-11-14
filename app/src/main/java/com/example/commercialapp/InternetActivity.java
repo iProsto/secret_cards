@@ -38,7 +38,6 @@ public class InternetActivity extends AppCompatActivity {
 
     private WebView webView;
     private boolean bigBack = false;
-
     String url = MainActivity.webViewURL;
     private final String API_KEY = "SHDZBAOCVSSUGCD2N3HXDFX7ZCGEPYPA";
 
@@ -54,39 +53,26 @@ public class InternetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_internet);
+        webView = findViewById(R.id.webView);
 
-        webView = new WebView(this);
-        webView.setFitsSystemWindows(true);
-
-        setContentView(webView, params);
+//        LinearLayout linearLayout = new LinearLayout(this);
+//        linearLayout.setOrientation(LinearLayout.VERTICAL);
+//        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+//        webView = new WebView(this);
+//        webView.setFitsSystemWindows(true);
+//
+//        setContentView(webView, params);
 
         initWebView();
+        initPushMsg();
+        initFB();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (requestCode == REQUEST_SELECT_FILE) {
-                if (uploadMessage == null)
-                    return;
-                uploadMessage.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
-                uploadMessage = null;
-            }
-        } else if (requestCode == FILECHOOSER_RESULTCODE) {
-            if (null == mUploadMessage)
-                return;
-            Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();
-            mUploadMessage.onReceiveValue(result);
-            mUploadMessage = null;
-        } else
-            Toast.makeText(this, "Failed to Upload Image", Toast.LENGTH_LONG).show();
-    }
+
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
@@ -94,6 +80,7 @@ public class InternetActivity extends AppCompatActivity {
         settings.setDomStorageEnabled(true);
         settings.setJavaScriptEnabled(true);
         settings.setAllowContentAccess(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
         settings.setLoadsImagesAutomatically(true);
         settings.setSupportMultipleWindows(true);
         settings.setDisplayZoomControls(false);
@@ -108,6 +95,7 @@ public class InternetActivity extends AppCompatActivity {
         WebViewClient webViewClient = new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                showLog("Load url: " + url);
                 view.loadUrl(url);
                 return true;
             }
@@ -115,7 +103,7 @@ public class InternetActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.N)
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                showLog("Load url: " + request.getUrl().toString());
+                showLog("Load url (with request): " + request.getUrl().toString());
                 view.loadUrl(request.getUrl().toString());
                 return true;
             }
@@ -216,6 +204,28 @@ public class InternetActivity extends AppCompatActivity {
         showLog("Link got2: " + newUrl);
     }
 
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (requestCode == REQUEST_SELECT_FILE) {
+                if (uploadMessage == null)
+                    return;
+                uploadMessage.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
+                uploadMessage = null;
+            }
+        } else if (requestCode == FILECHOOSER_RESULTCODE) {
+            if (null == mUploadMessage)
+                return;
+            Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();
+            mUploadMessage.onReceiveValue(result);
+            mUploadMessage = null;
+        } else
+            Toast.makeText(this, "Failed to Upload Image", Toast.LENGTH_LONG).show();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -240,8 +250,6 @@ public class InternetActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        showLog("\n");
-//        getBackForwardList(webView.copyBackForwardList());
         if (webView.canGoBack()) {
             if (webView.copyBackForwardList().getSize() >= 7) {
                 webView.goBackOrForward(-3);

@@ -26,11 +26,11 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".InternetActivity" />
-
         <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:name=".InternetActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

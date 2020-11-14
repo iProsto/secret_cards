@@ -22,6 +22,7 @@ public class RequestToGit {
                 urlConnection.disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
+                requestListener.rejection();
             }
         }).start();
         new Thread(() -> {
