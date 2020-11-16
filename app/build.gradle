@@ -22,7 +22,7 @@ android {
                 onesignal_app_id               : '540e3b41-f030-4d6e-bf29-a2a7de905ea0',
                 onesignal_google_project_number: 'REMOTE'
         ]
-        applicationId "com.example.commercialapp"
+        applicationId "com.shevchenko.secretcards"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

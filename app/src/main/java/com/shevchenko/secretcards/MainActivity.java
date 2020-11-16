@@ -1,45 +1,19 @@
-package com.example.commercialapp;
+package com.shevchenko.secretcards;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.net.http.SslError;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
-import android.webkit.WebBackForwardList;
-import android.webkit.WebChromeClient;
-import android.webkit.WebHistoryItem;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
-import com.facebook.applinks.AppLinkData;
-import com.onesignal.OneSignal;
-import com.tenjin.android.TenjinSDK;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import bolts.AppLinks;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 

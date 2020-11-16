@@ -1,4 +1,4 @@
-package com.example.commercialapp;
+package com.shevchenko.secretcards;
 
 import android.content.Context;
 

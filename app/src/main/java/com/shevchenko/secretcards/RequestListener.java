@@ -1,4 +1,4 @@
-package com.example.commercialapp;
+package com.shevchenko.secretcards;
 
 public abstract class RequestListener {
     public abstract void waiterForBool(boolean bool);

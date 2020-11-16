@@ -1,4 +1,4 @@
-package com.example.commercialapp;
+package com.shevchenko.secretcards;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,17 +13,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
+import android.webkit.WebHistoryItem;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -250,6 +249,7 @@ public class InternetActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        getBackForwardList(webView.copyBackForwardList());
         if (webView.canGoBack()) {
             if (webView.copyBackForwardList().getSize() >= 7) {
                 webView.goBackOrForward(-3);
@@ -260,6 +260,37 @@ public class InternetActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    //    @Override
+//    public void onBackPressed() {
+////        showLog("\n");
+////        getBackForwardList(webView.copyBackForwardList());
+//        if (webView.canGoBack()) {
+//            if (webView.copyBackForwardList().getSize() >= 7) {
+//                webView.goBackOrForward(-3);
+//                bigBack = true;
+//            } else {
+//                webView.goBack();
+//            }
+//            return;
+//        }
+//        super.onBackPressed();
+//    }
+
+
+    /*#
+     * # CLASSES AND DEBUG
+     * #
+     * */
+
+    public void getBackForwardList(WebBackForwardList currentList) {
+        int currentSize = currentList.getSize();
+        for (int i = 0; i < currentSize; ++i) {
+            WebHistoryItem item = currentList.getItemAtIndex(i);
+            String url = item.getUrl();
+            showLog("List id " + i + " is " + url);
+        }
     }
 
     private void showLog(String str) {
