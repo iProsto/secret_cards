@@ -51,27 +51,13 @@ public class InternetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_internet);
         webView = findViewById(R.id.webView);
-
-//        LinearLayout linearLayout = new LinearLayout(this);
-//        linearLayout.setOrientation(LinearLayout.VERTICAL);
-//        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//
-//        webView = new WebView(this);
-//        webView.setFitsSystemWindows(true);
-//
-//        setContentView(webView, params);
 
         initWebView();
         initPushMsg();
         initFB();
     }
-
-
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
@@ -202,8 +188,6 @@ public class InternetActivity extends AppCompatActivity {
         webView.loadUrl(newUrl);
         showLog("Link got2: " + newUrl);
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {

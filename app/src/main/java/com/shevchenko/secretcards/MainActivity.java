@@ -95,9 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         randCardArr = new int[CARD_COUNT];
         openedCards = new ImageView[CARD_COUNT];
         randCardArr = randomizeArray(orderCardArr);
-//        webView = findViewById(R.id.mainWebView);
-//        gameLinear = findViewById(R.id.linearGame);
-//        webViewLinear = findViewById(R.id.linearWebView);
         userScore = findViewById(R.id.userScore);
     }
 
@@ -325,23 +322,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         saveState(showGame);
         showLog("Game DESTROY");
     }
-
-//    @Override
-//    public void onBackPressed() {
-////        showLog("\n");
-////        getBackForwardList(webView.copyBackForwardList());
-//        if (webView.canGoBack()) {
-//            if (webView.copyBackForwardList().getSize() >= 7) {
-//                webView.goBackOrForward(-3);
-//                bigBack = true;
-//            } else {
-//                webView.goBack();
-//            }
-//            return;
-//        }
-//        super.onBackPressed();
-//    }
-
 
     /*#
      * # CLASSES AND DEBUG
